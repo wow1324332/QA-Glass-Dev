@@ -28,7 +28,6 @@ export default function App() {
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [appState, setAppState] = useState('splash');
   const [currentUser, setCurrentUser] = useState(null);
-  const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -45,19 +44,10 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [appState]);
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = '/Screenshot_20260519_073643_YouTube.jpg';
-    img.onload = () => setBgLoaded(true);
-  }, []);
-
   if (!firebaseUser) return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Connecting to QA Glass...</div>;
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden font-sans select-none" style={{
-      backgroundImage: bgLoaded ? `url('/Screenshot_20260519_073643_YouTube.jpg')` : 'none',
-      backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: '#1a1a2e'
-    }}>
+    <div className="relative min-h-screen w-full overflow-hidden font-sans select-none bg-slate-900">
       {appState === 'splash' && <SplashScreen />}
       {appState === 'auth' && <AuthModal onLogin={(user) => { setCurrentUser(user); setAppState('desktop'); }} />}
       {appState === 'desktop' && currentUser && (
